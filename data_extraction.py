@@ -22,6 +22,11 @@ advanced=pd.read_csv('./NBA-stats/Advanced.csv')
 end_of_season=pd.read_csv('./NBA-stats/End of Season Teams.csv')
 players = player_career_info
 
+# exclude players with final season greater or equal than 2020
+
+players = players[players['last_seas'] < 2020]
+players = players.reset_index(drop=True)
+
 namelist = players['player']
 
 points = []
@@ -69,8 +74,8 @@ alldef2 = []
 allrooks1 = []
 allrooks2 = []
 
-allaba1 = []
-allaba2 = []
+# allaba1 = []
+# allaba2 = []
 
 allstar = []
 
@@ -79,14 +84,14 @@ dpoy = []
 nba_roy = []
 mip = []
 smoy = []
-aba_mvp = []
-aba_rook = []
+# aba_mvp = []
+# aba_rook = []
 
 for name in namelist:
     allnba = end_of_season[(end_of_season['type'] == 'All-NBA') & (end_of_season['player'] == name)]
     alldefense = end_of_season[(end_of_season['type'] == 'All-Defense')&(end_of_season['player'] == name)]
     allrooks = end_of_season[(end_of_season['type'] == 'All-Rookie')&(end_of_season['player'] == name)]
-    allaba = end_of_season[(end_of_season['type'] == 'All-ABA') & (end_of_season['player'] == name)]
+    # allaba = end_of_season[(end_of_season['type'] == 'All-ABA') & (end_of_season['player'] == name)]
 
     allstars = all_star[all_star['player'] == name]
 
@@ -95,8 +100,8 @@ for name in namelist:
     nba_roys = player_award_shares[(player_award_shares['award'] == 'nba roy') & (player_award_shares['player'] == name)]
     mips = player_award_shares[(player_award_shares['award'] == 'mip') & (player_award_shares['player'] == name)]
     smoys = player_award_shares[(player_award_shares['award'] == 'nba mvp') & (player_award_shares['player'] == name)]
-    aba_mvps = player_award_shares[(player_award_shares['award'] == 'aba mvp') & (player_award_shares['player'] == name)]
-    aba_rooks = player_award_shares[(player_award_shares['award'] == 'aba roy') & (player_award_shares['player'] == name)]
+    # aba_mvps = player_award_shares[(player_award_shares['award'] == 'aba mvp') & (player_award_shares['player'] == name)]
+    # aba_rooks = player_award_shares[(player_award_shares['award'] == 'aba roy') & (player_award_shares['player'] == name)]
     
     try:
         tmpnba1 = allnba['number_tm'].value_counts()['1st']
@@ -143,18 +148,18 @@ for name in namelist:
     allrooks1.append(tmprooks1)
     allrooks2.append(tmprooks2)
 
-    try:
-        tmpaba1 = allaba['number_tm'].value_counts()['1st']
-    except:
-        tmpaba1 = 0
+    # try:
+    #     tmpaba1 = allaba['number_tm'].value_counts()['1st']
+    # except:
+    #     tmpaba1 = 0
 
-    try:
-        tmpaba2 = allaba['number_tm'].value_counts()['2nd']
-    except:
-        tmpaba2 = 0
+    # try:
+    #     tmpaba2 = allaba['number_tm'].value_counts()['2nd']
+    # except:
+    #     tmpaba2 = 0
     
-    allaba1.append(tmpaba1)
-    allaba2.append(tmpaba2)
+    # allaba1.append(tmpaba1)
+    # allaba2.append(tmpaba2)
 
     try:
         tmpAllStar = allstars['replaced'].count()
@@ -198,19 +203,19 @@ for name in namelist:
     
     smoy.append(tmpSMOY)
 
-    try:
-        tmpABAmvp = sum(aba_mvps['winner'])
-    except:
-        tmpABAmvp = 0
+    # try:
+    #     tmpABAmvp = sum(aba_mvps['winner'])
+    # except:
+    #     tmpABAmvp = 0
     
-    aba_mvp.append(tmpABAmvp)
+    # aba_mvp.append(tmpABAmvp)
 
-    try:
-        tmpABArook = sum(aba_rooks['winner'])
-    except:
-        tmpABArook = 0
+    # try:
+    #     tmpABArook = sum(aba_rooks['winner'])
+    # except:
+    #     tmpABArook = 0
     
-    aba_rook.append(tmpABArook)
+    # aba_rook.append(tmpABArook)
 
 players['All NBA 1st team'] = allnba1
 players['All NBA 2nd team'] = allnba2
@@ -222,8 +227,8 @@ players['All Defense 2nd team'] = alldef2
 players['All Rookie 1st team'] = allrooks1
 players['All Rookie 2nd team'] = allrooks2
 
-players['All ABA 1st team'] = allaba1
-players['All ABA 2nd team'] = allaba2
+# players['All ABA 1st team'] = allaba1
+# players['All ABA 2nd team'] = allaba2
 
 players['All Star appearances'] = allstar
 
@@ -232,15 +237,15 @@ players['DPOY'] = dpoy
 players['NBA ROY'] = nba_roy
 players['MIP'] = mip
 players['SMOY'] = smoy
-players['ABA MVP'] = aba_mvp
-players['ABA ROY'] = aba_rook
+# players['ABA MVP'] = aba_mvp
+# players['ABA ROY'] = aba_rook
 
-isHOF = list(players['hof'])
-hof = players.loc[isHOF]
-players.drop(hof.index, inplace=True)
-players = players.reset_index(drop=True)
-hof = hof.reset_index(drop=True)
+# isHOF = list(players['hof'])
+# hof = players.loc[isHOF]
+# players.drop(hof.index, inplace=True)
+# players = players.reset_index(drop=True)
+# hof = hof.reset_index(drop=True)
 
 os.makedirs('results', exist_ok=True)
-hof.to_csv('results/hof.csv', index=False)
+# hof.to_csv('results/hof.csv', index=False)
 players.to_csv('results/players.csv', index=False)
